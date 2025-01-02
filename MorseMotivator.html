@@ -68,7 +68,7 @@
         </div>
         <div class="input-group me-5 w-auto">
           <span class="input-group-text">Frequenz CW Ton (Hz): <output id="output_freq" ></output></span>
-          <input id="input_freq" type="range" class="form-range form-control me-3 px-1" min="400" max="2000" oninput="this.previousElementSibling.children[0].value = this.value">
+          <input id="input_freq" type="range" class="form-range form-control me-3 px-1" min="400" max="2000" oninput="this.previousElementSibling.children[0].value = this.value; jscwlib_update_frequency()">
         </div>
       </div>
       <div class="d-flex flex-wrap justify-content-center my-4">
@@ -128,18 +128,18 @@
         </span>
       </div>
       <div class="d-flex justify-content-center my-4">
-        <!-- TODO: implement start_morse() -->
-        <button type="button" class="btn btn-primary fw-bold mx-4" onclick="start_morse();">Morsetraining starten</button>
-        <!-- TODO: implement stop_morse() -->
-        <!-- Reconsider color since it is the same as Koch chars -->
-        <button type="button" class="btn btn-danger fw-bold mx-4" onclick="stop_morse();">Morsetraining stoppen</button>
+        <button type="button" class="btn btn-primary fw-bold mx-4" onclick="jscwlib_generate_morse();">Morsetext generieren</button>
         <!-- TODO: implement store_settings() -->
         <button type="button" class="btn btn-warning mx-4" onclick="store_settings();">Einstellungen in Cookie speichern</button>
         <button type="button" class="btn btn-warning mx-4" onclick="reset_settings();">Cookie löschen und Reset</button>
       </div>
     </div>
     <!-- TODO: Display words here -->
+    <div class="d-flex justify-content-center my-4">
+        <div class="px-5"><div id="player"></div></div>
+    </div>
 
+    <script src="https://lcwo.net/js/jscwlib.js"></script>
     <script src="MorseMotivator_ui.js"></script>
     </body>
 </html>

@@ -44,6 +44,11 @@ function update_koch_chars() {
     }
 }
 
+// Inform jscwlib about frequency change. Also works while player is running
+function jscwlib_update_frequency() {
+    m.setFreq(document.getElementById("input_freq").value);
+}
+
 // Set {input,output}_n_chrs according to character that was just clicked
 function koch_char_clicked(element) {
     let counter = 0;
@@ -54,4 +59,26 @@ function koch_char_clicked(element) {
     document.getElementById("input_n_chars").value = counter;
     apply_range_values();
     update_koch_chars();
+}
+
+m = new jscw();
+function jscwlib_generate_morse() {
+    if(!m.paused) m.pause(); // In case player is already running
+    m = new jscw();
+    jscwlib_update_frequency();
+    m.setWpm(document.getElementById("input_wpm").value);
+    m.setEff(document.getElementById("input_effective_wpm").value);
+    m.setStartDelay(3);
+    m.setText("CQ CQ CQ DE HB9UF HB9UF HB9UF K"); // TODO: Fetch proper text on click
+    m.renderPlayer('player', m);
+    let player = document.getElementById('player');
+    // Override  few default styles
+    player.style.width = '220px';
+    player.style.borderStyle = 'none';
+    // Add border now since border around empty player div is ugly
+    player.parentElement.classList.add('border', 'border-primary');
+    // We want to hide the Settings button by setting the invisible class property on
+    // the respective element. This is not great as the authors of jcswlib may rename
+    // something, breaking the following querySelector in consequence.
+    player.querySelector("a[title='Settings']").classList.add('invisible');
 }
