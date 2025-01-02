@@ -61,6 +61,14 @@ function koch_char_clicked(element) {
     update_koch_chars();
 }
 
+function activate_spinner() {
+    document.getElementById("spinner").classList.remove("invisible");
+}
+
+function disable_spinner() {
+    document.getElementById("spinner").classList.add("invisible");
+}
+
 m = new jscw();
 function jscwlib_generate_morse() {
     if(!m.paused) m.pause(); // In case player is already running
