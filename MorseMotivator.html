@@ -1,0 +1,144 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HB9UF MorseMotivator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- TODO: Move to dedicated css file -->
+    <style>
+    input[type="range"] {
+      /* large enough to dominate height of input-group */
+      height: 50px;
+    }
+
+    /* Large text for settings */
+    /* TODO: ensure this works on mobile devices */
+    .input-group-text {
+      min-width: 15em;
+      font-size: 1.5em;
+    }
+
+    /* Remove box around range controller when rules is clicked */
+    .form-control:focus {
+      box-shadow: none;
+    }
+
+    /* Force pointer on letters indicating Koch method progress */
+    .kochline {
+        cursor: pointer;
+    }
+
+    /* Formatting for numeric settings */
+    output {
+        font-weight: bold;
+        margin: 0em 0.5em;
+    }
+
+    </style>
+  </head>
+
+  <body>
+    <header data-bs-theme="dark">
+      <div class="navbar navbar-dark bg-dark">          
+        <div class="container">
+          <span class="navbar-brand d-flex align-items-center">
+            <strong><a href="#" class="nav-link">HB9UF MorseMotivator</a></strong>
+          </span>
+        </div>
+      </div>
+    </header>
+
+    <div class="container">
+      <!-- TODO: check if container is the right way to layout the page -->
+      <div class="d-flex flex-wrap justify-content-center my-4">
+        <div class="input-group me-5 w-auto">
+          <span class="input-group-text">WPM:<output id="output_wpm"></output></span>
+          <input id="input_wpm" type="range" class="form-range form-control me-3 px-1" min="15" max="40" oninput="this.previousElementSibling.children[0].value = this.value">
+        </div>
+        <div class="input-group me-5 w-auto">
+          <span class="input-group-text">WPM effektiv: <output id="output_effective_wpm" ></output></span>
+          <input id="input_effective_wpm" type="range" class="form-range form-control me-3 px-1" min="15" max="40" oninput="this.previousElementSibling.children[0].value = this.value">
+        </div>
+      </div>
+      <div class="d-flex flex-wrap justify-content-center my-4">
+        <div class="input-group me-5 w-auto">
+          <span class="input-group-text">Begrenzung Wortlänge: <output id="output_maxlength" ></output></span>
+          <input id="input_maxlength" type="range" class="form-range form-control me-3 px-1" min="2" max="20" oninput="this.previousElementSibling.children[0].value = this.value">
+        </div>
+        <div class="input-group me-5 w-auto">
+          <span class="input-group-text">Frequenz CW Ton (Hz): <output id="output_freq" ></output></span>
+          <input id="input_freq" type="range" class="form-range form-control me-3 px-1" min="400" max="2000" oninput="this.previousElementSibling.children[0].value = this.value">
+        </div>
+      </div>
+      <div class="d-flex flex-wrap justify-content-center my-4">
+        <div class="input-group me-5 w-auto">
+          <span class="input-group-text">Anzahl Worte: <output id="output_n_words" ></output></span>
+          <input id="input_n_words" type="range" class="form-range form-control me-3 px-1" min="1" max="30" oninput="this.previousElementSibling.children[0].value = this.value">
+        </div>
+        <div class="input-group me-5 w-auto">
+          <!-- TODO: Change color to red -->
+          <span class="input-group-text">Buchstaben gemäss Koch: <output id="output_n_chars" ></output></span>
+          <input id="input_n_chars" type="range" class="form-range form-control me-3 px-1" min="4" max="41" oninput="this.previousElementSibling.children[0].value = this.value; update_koch_chars()">
+        </div>
+      </div>
+      <div class="my-4 me-5 fs-4 text-center">
+        <span id="koch_chars" class="border rounded p-2">
+          <span class="mx-1 fw-bold">K</span>
+          <span class="mx-1 fw-bold">M</span>
+          <span class="mx-1 fw-bold">U</span>
+          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">R</span>
+          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">E</span>
+          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">S</span>
+          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">N</span>
+          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">A</span>
+          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">P</span>
+          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">T</span>
+          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">L</span>
+          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">W</span>
+          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">I</span>
+          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">.</span>
+          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">J</span>
+          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">Z</span>
+          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">=</span>
+          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">F</span>
+          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">O</span>
+          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">Y</span>
+          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">,</span>
+          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">V</span>
+          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">G</span>
+          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">5</span>
+          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">/</span>
+          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">Q</span>
+          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">9</span>
+          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">2</span>
+          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">H</span>
+          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">3</span>
+          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">8</span>
+          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">B</span>
+          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">?</span>
+          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">4</span>
+          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">7</span>
+          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">C</span>
+          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">1</span>
+          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">D</span>
+          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">6</span>
+          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">0</span>
+          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">X</span>
+        </span>
+      </div>
+      <div class="d-flex justify-content-center my-4">
+        <!-- TODO: implement start_morse() -->
+        <button type="button" class="btn btn-primary fw-bold mx-4" onclick="start_morse();">Morsetraining starten</button>
+        <!-- TODO: implement stop_morse() -->
+        <!-- Reconsider color since it is the same as Koch chars -->
+        <button type="button" class="btn btn-danger fw-bold mx-4" onclick="stop_morse();">Morsetraining stoppen</button>
+        <!-- TODO: implement store_settings() -->
+        <button type="button" class="btn btn-warning mx-4" onclick="store_settings();">Einstellungen in Cookie speichern</button>
+        <!-- TODO: implement reset_settings() -->
+        <button type="button" class="btn btn-warning mx-4" onclick="reset_settings();">Cookie löschen und Reset</button>
+      </div>
+    </div>
+    <!-- TODO: Display words here -->
+    </body>
+</html>
