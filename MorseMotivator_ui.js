@@ -154,6 +154,51 @@ function compile_text() {
     return ret;
 }
 
+// this will process the array passed as parameter and populate the cw_text <div>
+function populate_cw_text(text_array) {
+    let div = document.getElementById('cw_text');
+    div.innerHTML = ''; // Clear content
+    for (word of text_array) {
+        for(c of word) {
+            // Dedicated span for every character
+            let span = document.createElement("span");
+            span.innerHTML = c;
+            div.appendChild(span);
+        }
+        // Extra span for space
+        let span = document.createElement("span");
+        span.innerHTML = ' ';
+        div.appendChild(span);
+    }
+}
+
+function show_cw_text() {
+    document.getElementById('cw_text').classList.remove('invisible');
+    document.getElementById('show_cw_text').classList.add('d-none');
+    document.getElementById('hide_cw_text').classList.remove('d-none');
+}
+
+function hide_cw_text() {
+    document.getElementById('cw_text').classList.add('invisible');
+    document.getElementById('show_cw_text').classList.remove('d-none');
+    document.getElementById('hide_cw_text').classList.add('d-none');
+}
+
+// jscwlib callback, called on every character. Used to move the highlight
+// Parameter o is object with attribute 'n' (position) and 'c' (character)
+function highlight_cw_text(o) {
+    let chars = document.getElementById("cw_text").children;
+    chars[o.n].classList.add("text-primary");
+    if(o.n > 0) chars[o.n-1].classList.remove("text-primary");
+}
+
+function clear_cw_text_highlights() {
+    let chars = document.getElementById("cw_text").children;
+    for(c of chars) {
+        c.classList.remove("text-primary");
+    }
+}
+
 m = new jscw();
 function jscwlib_generate_morse() {
     activate_spinner();
@@ -163,9 +208,15 @@ function jscwlib_generate_morse() {
 // ... here, we wait for the wordlist to load ...
 
 function jscwlib_generate_morse_cont() {
+    // Compile and set text
     let text_array = compile_text();
+    populate_cw_text(text_array);
     disable_spinner();
 
+    // Now that cw_text is populated, enable the display button
+    document.getElementById('show_cw_text').classList.remove('disabled');
+
+    // Setup jscw
     if(!m.paused) m.pause(); // In case player is already running
     m = new jscw();
     jscwlib_update_frequency();
@@ -173,6 +224,10 @@ function jscwlib_generate_morse_cont() {
     m.setEff(document.getElementById("input_effective_wpm").value);
     m.setStartDelay(3);
     m.setText(text_array.join(" "));
+    m.onCharacterPlay = highlight_cw_text; // Callback to update cw_text highlight
+    m.onFinished = clear_cw_text_highlights; // Callback to remove all highlights
+    // This is needed since the stop button does not appear to trigger the onFinished callback
+    m.onPlay = clear_cw_text_highlights;
     m.renderPlayer("player", m);
     let player = document.getElementById("player");
     // Override  few default styles
