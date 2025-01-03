@@ -69,15 +69,110 @@ function disable_spinner() {
     document.getElementById("spinner").classList.add("invisible");
 }
 
+/* Insert a <script> tag with the appropriate word list as WORDLIST array.
+ * The WORDLIST must be sorted with incrementing word length for the wordlength-
+ * constrained shuffle to work properly. The <script>-approach seems like a bit
+ * of a hack, but we can also load the wordlist from the local filesystem this way.
+ * There is an untested and probably buggy function fetch_wordlist() below that uses
+ * fetch() to load the file. In that case, the WORDLIST should be plain text and the
+ * return value must be stored into WORDLIST. We may come back later and revisit this
+ * approach.
+ */
+function load_wordlist() {
+    let input_n_chars = document.getElementById("input_n_chars").value;
+    test = /^\d+$/.test(input_n_chars) && input_n_chars >= 4 && input_n_chars <= 26;
+    if(!test) {
+        console.log("Error: input_n_chars is not an integer or out of bounds.");
+        return;
+    }
+
+    let script = document.createElement("script");
+    // TODO: Allow for English word list also
+    script.setAttribute("src", "wordlists/swiss." + input_n_chars);
+    script.setAttribute("type", "text/javascript");
+    script.setAttribute("onload", "jscwlib_generate_morse_cont()");
+    document.getElementsByTagName("head")[0].appendChild(script);
+}
+
+/*
+const BASE_URL = 'https://www.hb9uf.ch/MorseMotivator/';
+function fetch_wordlist() {
+    let input_n_chars = document.getElementById("input_n_chars").value;
+    test = /^\d+$/.test(input_n_chars) && input_n_chars >= 4 && input_n_chars <= 26;
+    if(!test) {
+        console.log("Error: input_n_chars is not an integer or out of bounds.");
+        return;
+    }
+
+    let url = BASE_URL + "/wordlists/swiss." + input_n_chars;
+    fetch(url)
+        .then(response => {
+            return response.text();
+        })
+        .then(content => {
+            let = content;
+        })
+        .catch(error => {
+            console.error(error);
+        });
+    return content;
+}
+*/
+
+https://stackoverflow.com/a/11935263/23545181
+function get_random_subarray(arr, size) {
+    var shuffled = arr.slice(0), i = arr.length, min = i - size, temp, index;
+    while (i-- > min) {
+        index = Math.floor((i + 1) * Math.random());
+        temp = shuffled[index];
+        shuffled[index] = shuffled[i];
+        shuffled[i] = temp;
+    }
+    return shuffled.slice(min);
+}
+
+// Returns an array of words drawn randomly from wordlist
+function compile_text() {
+    let word_length_limit = document.getElementById("input_maxlength").value;
+    let local_wordlist = [];
+    for(word of WORDLIST) {
+        if(word.length > word_length_limit) {
+            // WORDLIST is sorted by increasing word length, thus we can sefely abort
+            break;
+        }
+        local_wordlist.push(word);
+    }
+
+    let words_to_go = document.getElementById("input_n_words").value;
+    let ret = [];
+    // TODO: Perhaps use other randomization technique here
+    while(words_to_go > 0) {
+        let sample_size = Math.min(words_to_go, local_wordlist.length);
+        ret = ret.concat(get_random_subarray(local_wordlist, sample_size));
+        words_to_go -= sample_size;
+    }
+    return ret;
+}
+
 m = new jscw();
 function jscwlib_generate_morse() {
+    activate_spinner();
+    load_wordlist(); // onload will call jscwlib_generate_morse_cont
+}
+
+// ... here, we wait for the wordlist to load ...
+
+function jscwlib_generate_morse_cont() {
+    let text_array = compile_text();
+    disable_spinner();
+
     if(!m.paused) m.pause(); // In case player is already running
     m = new jscw();
     jscwlib_update_frequency();
     m.setWpm(document.getElementById("input_wpm").value);
     m.setEff(document.getElementById("input_effective_wpm").value);
     m.setStartDelay(3);
-    m.setText("CQ CQ CQ DE HB9UF HB9UF HB9UF K"); // TODO: Fetch proper text on click
+    m.setText(text_array.join(" "));
     m.renderPlayer("player", m);
     let player = document.getElementById("player");
     // Override  few default styles
