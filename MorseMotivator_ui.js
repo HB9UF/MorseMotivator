@@ -1,5 +1,8 @@
 // TODO: Load settings from cookie if they exist, reset otherwise
 reset_settings();
+// TODO: Only display modal when cookie is missing
+var help_modal = new bootstrap.Modal(document.getElementById('help_modal'), {});
+help_modal.show();
 
 // Copy range values to numeric output
 function apply_range_values() {

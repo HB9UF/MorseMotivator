@@ -36,19 +36,66 @@
     }
 
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
   </head>
 
   <body>
     <header data-bs-theme="dark">
       <div class="navbar navbar-dark bg-dark">          
         <div class="container">
-          <span class="navbar-brand d-flex align-items-center">
-            <strong><a href="#" class="nav-link">HB9UF MorseMotivator</a></strong>
+          <span class="navbar-brand">
+            <strong><a href="#" onclick="help_modal.toggle()" class="nav-link">HB9UF MorseMotivator (Betaversion)</a></strong>
           </span>
         </div>
       </div>
     </header>
 
+    <div class="modal fade" id="help_modal" tabindex="-1" role="dialog" aria-labelledby="help_modal_label" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="help_modal_label">MorseMotivator</h5>
+          </div>
+          <div class="modal-body">
+              <p>Wer morsen mit der Koch-Methode lernt, der weiss: Man übt und übt und übt das Lesen der
+              Zeichen, zuerst <code>K</code> und <code>M</code>, dann <code>U</code> und <code>R</code>,
+              und wenn die bereits bekannten Zeichen sitzen, dann kommt das nächste Zeichen hinzu. Das
+              kann ganz schön aufreibend sein, denn die Texte, mit denen man morsen lernt, bestehen in der
+              Regel aus zufällig zusammengewürfelten Zeichen, die keinen Sinn ergeben.</p>
+
+
+              <p>Der MorseMotivator ist eine kleine Browser-Applikation, die man zur eigenen Motivation
+              <b>zusätzlich</b> zu den bereits bekannten Werkzeugen nutzen kann. MorseMotivator nutzt
+              Worte aus der deutschen Sprache, wie <code>KUR</code>, <code>RUM</code> und <code>MUMM</code>.
+              Dass man in der Trainigsphase beim Lesen von Morsezeichen bekannte Worte erkennt, war
+              zumindest bei mir immer ein schönes Erlebnis, denn es zeigt einem den eigenen Fortschritt
+              unmittelbar auf. Zum Beispiel beim Lernen mit Rufzeichenlisten fehlt dieses Erlebnis, denn
+              es bleibt ungewiss, ob das Rufzeichen richtig aufgenommen wurde. Man könnte auch mit Freitexten
+              und QSOs arbeiten, aber beides setzt bereits Kenntnisse über eine Mehrheit der Zeichen des
+              Morse-Alphabets voraus. MorseMotivator hingegen funktioniert bereits mit den ersten vier
+              Zeichen der Koch-Methode (eben <code>K</code>, <code>M</code>, <code>U</code> und <code>R</code>)
+              und unterstützt auch Farnsworth-Timing. Es ist ausserdem möglich, die Wortlänge zu begrenzen.</p>
+
+              <p>Nachdem du MorseMotivator nach Wunsch eingestellt hast, kannst du die Schaltfläche
+              <button class="btn btn-primary btn-sm">Morsetext generieren</button> betätigen. Damit wird der
+              Text generiert und ein Player wird angezeigt. Ein weiterer Klick auf den Play-Button spielt
+              dann die Morsezeichen ab und du kannst auf einem Blatt Papier die Worte mitschreiben. Die
+              Schaltfläche <button class="btn btn-primary btn-sm">Morsetext anzeigen</button> zeigt den Text an,
+              so dass du ihn mit deinen Notizen vergleichen kannst.</p>
+
+              <p>MorseMotivator wurde von Mitgliedern der
+              <a href="https://www.hb9uf.ch">&laquo;UHF-Gruppe der USKA&laquo; (HB9UF)</a> erdacht und implementiert
+              und steht unter der <a href="https://www.gnu.org/licenses/agpl-3.0.html">GNU AGPL Lizenz 3</a>
+              allen <a href="https://github.com/HB9UF/MorseMotivator">auf github</a> frei zur Verfügung.
+              Die Software ist als Ergänzung zu anderen Morse-Trainern oder zu Kursen gedacht und nutzt zur
+              Generierung der Morsetöne die Library <a href="https://fkurz.net/ham/jscwlib.html#0.3.0">jscwlib</a> von Fabian Kurz.
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" onclick="help_modal.hide();">Intro schliessen</button>
+          </div>
+        </div>
+      </div>
+</div>
     <div class="container">
       <!-- TODO: check if container is the right way to layout the page -->
       <div class="d-flex flex-wrap justify-content-center my-4">
