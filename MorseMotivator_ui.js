@@ -35,11 +35,11 @@ function update_koch_chars() {
     let counter = 0;
     for(c of document.getElementById("koch_chars").children) {
         if(counter++ < document.getElementById("input_n_chars").value ) {
-            c.classList.add('text-danger');
-            c.classList.remove('text-muted');
+            c.classList.add("text-danger");
+            c.classList.remove("text-muted");
         } else {
-            c.classList.add('text-muted');
-            c.classList.remove('text-danger');
+            c.classList.add("text-muted");
+            c.classList.remove("text-danger");
         }
     }
 }
@@ -78,15 +78,15 @@ function jscwlib_generate_morse() {
     m.setEff(document.getElementById("input_effective_wpm").value);
     m.setStartDelay(3);
     m.setText("CQ CQ CQ DE HB9UF HB9UF HB9UF K"); // TODO: Fetch proper text on click
-    m.renderPlayer('player', m);
-    let player = document.getElementById('player');
+    m.renderPlayer("player", m);
+    let player = document.getElementById("player");
     // Override  few default styles
-    player.style.width = '220px';
-    player.style.borderStyle = 'none';
+    player.style.width = "220px";
+    player.style.borderStyle = "none";
     // Add border now since border around empty player div is ugly
-    player.parentElement.classList.add('border', 'border-primary');
+    player.parentElement.classList.add("border", "border-primary");
     // We want to hide the Settings button by setting the invisible class property on
     // the respective element. This is not great as the authors of jcswlib may rename
     // something, breaking the following querySelector in consequence.
-    player.querySelector("a[title='Settings']").classList.add('invisible');
+    player.querySelector("a[title='Settings']").classList.add("invisible");
 }
