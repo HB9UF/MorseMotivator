@@ -159,19 +159,31 @@
           <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">X</span>
         </span>
       </div>
-      <div class="d-flex justify-content-center my-4">
-        <button type="button" class="btn btn-primary btn-lg fw-bold mx-4" onclick="jscwlib_generate_morse();">
-            <span id="spinner" class="spinner-border spinner-border-sm invisible" role="status" aria-hidden="true"></span>
-            Morsetext generieren
-            <!-- dummy spinner to maintain symmetry -->
-            <span class="spinner-border spinner-border-sm invisible" role="status" aria-hidden="true"></span>
-        </button>
-        <button id="show_cw_text" type="button" class="btn btn-primary btn-lg fw-bold mx-4 disabled" onclick="show_cw_text();">Morsetext anzeigen</button>
+      <div class="d-flex flex-row flex-wrap justify-content-around">
+        <div class="align-content-center" >
+          <button type="button" class="btn btn-primary btn-lg fw-bold m-4" onclick="jscwlib_generate_morse();">
+              <span id="spinner" class="spinner-border spinner-border-sm invisible" role="status" aria-hidden="true"></span>
+              Morsetext generieren
+              <!-- dummy spinner to maintain symmetry -->
+              <span class="spinner-border spinner-border-sm invisible" role="status" aria-hidden="true"></span>
+          </button>
+        </div>
 
-        <button id="hide_cw_text" type="button" class="btn btn-primary btn-lg fw-bold mx-4 d-none" onclick="hide_cw_text();">Morsetext verstecken</button>
-        <!-- TODO: implement store_settings() -->
-        <button type="button" class="btn btn-warning btn-lg mx-4" onclick="store_settings();">Einstellungen in Cookie speichern</button>
-        <button type="button" class="btn btn-warning btn-lg mx-4" onclick="reset_settings();">Cookie löschen und Reset</button>
+        <div class="align-content-center">
+          <button id="show_cw_text" type="button" class="btn btn-primary btn-lg fw-bold m-4 disabled" onclick="show_cw_text();">Morsetext anzeigen</button>
+        </div>
+
+        <div class="align-content-center">
+          <button id="hide_cw_text" type="button" class="btn btn-primary btn-lg fw-bold m-4 d-none" onclick="hide_cw_text();">Morsetext verstecken</button>
+        </div>
+
+        <div class="align-content-center">
+          <!-- TODO: implement store_settings() -->
+          <button type="button" class="btn btn-warning btn-lg m-4" onclick="store_settings();">Einstellungen in Cookie speichern</button>
+        </div>
+
+        <div class="align-content-center">
+          <button type="button" class="btn btn-warning btn-lg m-4" onclick="reset_settings();">Cookie löschen und Reset</button>
         </div>
       </div>
 
