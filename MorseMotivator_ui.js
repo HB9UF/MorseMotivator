@@ -81,6 +81,7 @@ function disable_spinner() {
  * return value must be stored into WORDLIST. We may come back later and revisit this
  * approach.
  */
+/*
 function load_wordlist() {
     let input_n_chars = document.getElementById("input_n_chars").value;
     test = /^\d+$/.test(input_n_chars) && input_n_chars >= 4 && input_n_chars <= 26;
@@ -96,8 +97,8 @@ function load_wordlist() {
     script.setAttribute("onload", "jscwlib_generate_morse_cont()");
     document.getElementsByTagName("head")[0].appendChild(script);
 }
+*/
 
-/*
 const BASE_URL = 'https://www.hb9uf.ch/MorseMotivator/';
 function fetch_wordlist() {
     let input_n_chars = document.getElementById("input_n_chars").value;
@@ -113,16 +114,15 @@ function fetch_wordlist() {
             return response.text();
         })
         .then(content => {
-            let = content;
+            WORDLIST = content.split("\n");
+            jscwlib_generate_morse_cont();
         })
         .catch(error => {
             console.error(error);
         });
-    return content;
 }
-*/
 
-https://stackoverflow.com/a/11935263/23545181
+// https://stackoverflow.com/a/11935263/23545181
 function get_random_subarray(arr, size) {
     var shuffled = arr.slice(0), i = arr.length, min = i - size, temp, index;
     while (i-- > min) {
@@ -205,7 +205,7 @@ function clear_cw_text_highlights() {
 m = new jscw();
 function jscwlib_generate_morse() {
     activate_spinner();
-    load_wordlist(); // onload will call jscwlib_generate_morse_cont
+    fetch_wordlist(); // will call jscwlib_generate_morse_cont on success
 }
 
 // ... here, we wait for the wordlist to load ...
