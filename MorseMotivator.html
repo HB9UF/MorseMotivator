@@ -1,8 +1,8 @@
 <!doctype html>
 <html>
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>HB9UF MorseMotivator</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
@@ -10,21 +10,22 @@
   </head>
 
   <body>
-    <header data-bs-theme="dark">
-      <div class="navbar navbar-dark bg-dark">          
+    <header data-bs-theme="dark" class="mb-5">
+      <div class="navbar navbar-dark bg-dark">
         <div class="container">
           <span class="navbar-brand">
             <strong><a href="#" onclick="help_modal.toggle()" class="nav-link">HB9UF MorseMotivator (Betaversion)</a></strong>
+            <!-- TODO: Separate link to intro -->
           </span>
         </div>
       </div>
     </header>
 
-    <div class="modal fade" id="help_modal" tabindex="-1" role="dialog" aria-labelledby="help_modal_label" aria-hidden="true">
+    <div class="modal modal-xl fade" id="help_modal" tabindex="-1" role="dialog" aria-labelledby="help_modal_label" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="help_modal_label">MorseMotivator</h5>
+            <h5 class="modal-title" id="help_modal_label">MorseMotivator Intro</h5>
           </div>
           <div class="modal-body">
               <p>Wer morsen mit der Koch-Methode lernt, der weiss: Man übt und übt und übt das Lesen der
@@ -57,114 +58,131 @@
               <a href="https://www.hb9uf.ch">&laquo;UHF-Gruppe der USKA&laquo; (HB9UF)</a> erdacht und implementiert
               und steht unter der <a href="https://www.gnu.org/licenses/agpl-3.0.html">GNU AGPL Lizenz 3</a>
               allen <a href="https://github.com/HB9UF/MorseMotivator">auf github</a> frei zur Verfügung.
+              Ein besonderer Dank gebührt Alex HB9FZW für die Hilfe beim UI-Design!
               Die Software ist als Ergänzung zu anderen Morse-Trainern oder zu Kursen gedacht und nutzt zur
-              Generierung der Morsetöne die Library <a href="https://fkurz.net/ham/jscwlib.html#0.3.0">jscwlib</a> von Fabian Kurz.
+              Generierung der Morsetöne die Library <a href="https://fkurz.net/ham/jscwlib.html#0.3.0">jscwlib</a> von Fabian Kurz.</p>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" onclick="help_modal.hide();">Intro schliessen</button>
           </div>
         </div>
       </div>
-</div>
+    </div>
+
     <div class="container">
-      <!-- TODO: check if container is the right way to layout the page -->
-      <div class="d-flex flex-wrap justify-content-center my-4">
-        <div class="input-group me-5 w-auto">
-          <span class="input-group-text">WPM:<output id="output_wpm"></output></span>
-          <input id="input_wpm" type="range" class="form-range form-control me-3 px-1" min="15" max="40" oninput="this.previousElementSibling.children[0].value = this.value">
+      <div class="row">
+        <div class="d-flex flex-column flex-md-wrap justify-content-center my-4">
+          <div class="input-group mb-3 w-100 w-md-auto">
+            <span class="input-group-text flex-wrap">WPM:<output id="output_wpm"></output> </span>
+            <input id="input_wpm" type="range" class="form-range form-control px-1" min="15" max="40" oninput="this.previousElementSibling.children[0].value = this.value" />
+          </div>
+
+          <div class="input-group mb-3 w-100 w-md-auto">
+            <span class="input-group-text flex-wrap">WPM effektiv:<output id="output_effective_wpm"></output></span>
+            <input id="input_effective_wpm" type="range" class="form-range form-control px-1" min="15" max="40" oninput="this.previousElementSibling.children[0].value = this.value" />
+          </div>
         </div>
-        <div class="input-group me-5 w-auto">
-          <span class="input-group-text">WPM effektiv: <output id="output_effective_wpm" ></output></span>
-          <input id="input_effective_wpm" type="range" class="form-range form-control me-3 px-1" min="15" max="40" oninput="this.previousElementSibling.children[0].value = this.value">
+
+        <div class="d-flex flex-column flex-md-wrap justify-content-center my-4">
+          <div class="input-group mb-3 w-100 w-md-auto">
+            <span class="input-group-text flex-wrap">Begrenzung Wortlänge:<output id="output_maxlength"></output></span>
+            <input id="input_maxlength" type="range" class="form-range form-control px-1" min="2" max="20" oninput="this.previousElementSibling.children[0].value = this.value" />
+          </div>
+
+          <div class="input-group mb-3 w-100 w-md-auto">
+            <span class="input-group-text flex-wrap">Frequenz CW Ton (Hz):<output id="output_freq"></output></span>
+            <input id="input_freq" type="range" class="form-range form-control px-1" min="400" max="2000" oninput="this.previousElementSibling.children[0].value = this.value; jscwlib_update_frequency()" />
+          </div>
+        </div>
+
+        <div class="d-flex flex-column flex-md-wrap justify-content-center my-4">
+          <div class="input-group mb-3 w-100 w-md-auto">
+            <span class="input-group-text flex-wrap">Anzahl Worte:<output id="output_n_words"></output></span>
+            <input id="input_n_words" type="range" class="form-range form-control px-1" min="1" max="30" oninput="this.previousElementSibling.children[0].value = this.value" />
+          </div>
+          <div class="input-group mb-3 w-100 w-md-auto">
+            <!-- TODO: Change color to red -->
+            <span class="input-group-text flex-wrap">Buchstaben gemäss Koch:<output id="output_n_chars"></output></span>
+            <input id="input_n_chars" type="range" class="form-range form-control px-1" min="4" max="26" oninput="this.previousElementSibling.children[0].value = this.value; update_koch_chars()" />
+          </div>
+        </div>
+
+        <div class="py-3 my-4 fs-4 w-100 text-center border rounded">
+          <span id="koch_chars" class="p-2">
+            <span class="mx-1 fw-bold">K</span>
+            <span class="mx-1 fw-bold">M</span>
+            <span class="mx-1 fw-bold">U</span>
+            <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">R</span>
+            <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">E</span>
+            <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">S</span>
+            <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">N</span>
+            <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">A</span>
+            <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">P</span>
+            <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">T</span>
+            <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">L</span>
+            <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">W</span>
+            <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">I</span>
+            <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">J</span>
+            <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">Z</span>
+            <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">F</span>
+            <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">O</span>
+            <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">Y</span>
+            <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">V</span>
+            <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">G</span>
+            <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">Q</span>
+            <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">H</span>
+            <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">B</span>
+            <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">C</span>
+            <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">D</span>
+            <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">X</span>
+          </span>
         </div>
       </div>
-      <div class="d-flex flex-wrap justify-content-center my-4">
-        <div class="input-group me-5 w-auto">
-          <span class="input-group-text">Begrenzung Wortlänge: <output id="output_maxlength" ></output></span>
-          <input id="input_maxlength" type="range" class="form-range form-control me-3 px-1" min="2" max="20" oninput="this.previousElementSibling.children[0].value = this.value">
-        </div>
-        <div class="input-group me-5 w-auto">
-          <span class="input-group-text">Frequenz CW Ton (Hz): <output id="output_freq" ></output></span>
-          <input id="input_freq" type="range" class="form-range form-control me-3 px-1" min="400" max="2000" oninput="this.previousElementSibling.children[0].value = this.value; jscwlib_update_frequency()">
-        </div>
-      </div>
-      <div class="d-flex flex-wrap justify-content-center my-4">
-        <div class="input-group me-5 w-auto">
-          <span class="input-group-text">Anzahl Worte: <output id="output_n_words" ></output></span>
-          <input id="input_n_words" type="range" class="form-range form-control me-3 px-1" min="1" max="30" oninput="this.previousElementSibling.children[0].value = this.value">
-        </div>
-        <div class="input-group me-5 w-auto">
-          <!-- TODO: Change color to red -->
-          <span class="input-group-text">Buchstaben gemäss Koch: <output id="output_n_chars" ></output></span>
-          <input id="input_n_chars" type="range" class="form-range form-control me-3 px-1" min="4" max="26" oninput="this.previousElementSibling.children[0].value = this.value; update_koch_chars()">
-        </div>
-      </div>
-      <div class="my-4 me-5 fs-4 text-center border rounded">
-        <span id="koch_chars" class="p-2">
-          <span class="mx-1 fw-bold">K</span>
-          <span class="mx-1 fw-bold">M</span>
-          <span class="mx-1 fw-bold">U</span>
-          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">R</span>
-          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">E</span>
-          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">S</span>
-          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">N</span>
-          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">A</span>
-          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">P</span>
-          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">T</span>
-          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">L</span>
-          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">W</span>
-          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">I</span>
-          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">J</span>
-          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">Z</span>
-          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">F</span>
-          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">O</span>
-          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">Y</span>
-          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">V</span>
-          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">G</span>
-          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">Q</span>
-          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">H</span>
-          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">B</span>
-          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">C</span>
-          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">D</span>
-          <span class="kochline mx-1 fw-bold" onclick="koch_char_clicked(this)">X</span>
-        </span>
-      </div>
-      <div class="d-flex flex-row flex-wrap justify-content-around">
-        <div class="align-content-center" >
-          <button type="button" class="btn btn-primary btn-lg fw-bold m-4" onclick="jscwlib_generate_morse();">
-              <span id="spinner" class="spinner-border spinner-border-sm invisible" role="status" aria-hidden="true"></span>
-              Morsetext generieren
-              <!-- dummy spinner to maintain symmetry -->
-              <span class="spinner-border spinner-border-sm invisible" role="status" aria-hidden="true"></span>
+
+      <div class="row mt-4">
+        <div class="col-sm-6">
+          <button type="button" class="btn btn-primary btn-lg w-100 fw-bold mb-4" onclick="jscwlib_generate_morse();">
+            <span id="spinner" class="spinner-border spinner-border-sm invisible" role="status" aria-hidden="true"></span>
+            Morsetext generieren
+            <!-- dummy spinner to maintain symmetry -->
+            <span class="spinner-border spinner-border-sm invisible" role="status" aria-hidden="true"></span>
           </button>
         </div>
-
-        <div class="align-content-center">
-          <button id="show_cw_text" type="button" class="btn btn-primary btn-lg fw-bold m-4 disabled" onclick="show_cw_text();">Morsetext anzeigen</button>
+        <div class="col-sm-6">
+          <button id="show_cw_text" type="button" class="btn btn-primary btn-lg w-100 fw-bold mb-4 disabled" onclick="show_cw_text();">Morsetext anzeigen</button>
+          <button id="hide_cw_text" type="button" class="btn btn-primary btn-lg w-100 fw-bold mb-4 d-none" onclick="hide_cw_text();">Morsetext verstecken</button>
         </div>
-
-        <div class="align-content-center">
-          <button id="hide_cw_text" type="button" class="btn btn-primary btn-lg fw-bold m-4 d-none" onclick="hide_cw_text();">Morsetext verstecken</button>
-        </div>
-
-        <div class="align-content-center">
+        <div class="col-sm-6">
           <!-- TODO: implement store_settings() -->
-          <button type="button" class="btn btn-warning btn-lg m-4" onclick="store_settings();">Einstellungen in Cookie speichern</button>
+          <button type="button" class="btn btn-warning btn-lg w-100" onclick="store_settings();">Einstellungen in Cookie speichern</button>
+        </div>
+        <div class="col-sm-6">
+          <button type="button" class="btn btn-warning btn-lg w-100" onclick="reset_settings();">Cookie löschen und Reset</button>
         </div>
 
-        <div class="align-content-center">
-          <button type="button" class="btn btn-warning btn-lg m-4" onclick="reset_settings();">Cookie löschen und Reset</button>
+        <div class="d-flex justify-content-center my-4">
+          <div class="px-5"><div id="player"></div></div>
+        </div>
+
+        <div class="d-flex justify-content-center my-4">
+          <div id="cw_text" class="px-5 fs-4 border invisible"></div>
         </div>
       </div>
-
-      <div class="d-flex justify-content-center my-4">
-       <div class="px-5"><div id="player"></div></div>
-      </div>
-
-      <div class="d-flex justify-content-center my-4">
-        <div id="cw_text" class="px-5 fs-4 border invisible"></div></div>
     </div>
+
+    <div class="container-fluid bg-dark">
+      <div class="row">
+        <div class="col-sm-12 text-center text-white mt-2">
+          <!-- TODO: Make sure this aligns with the bottom of the browser even when zoomed out -->
+          <p>&copy; <span id="year"></span> <a href="#" class="text-white">HB9UF MorseMotivator</a></p>
+          <script>
+            document.getElementById("year").textContent = new Date().getFullYear();
+          </script>
+        </div>
+      </div>
+    </div>
+
     <script src="https://lcwo.net/js/jscwlib.js"></script>
     <script src="MorseMotivator_ui.js"></script>
-    </body>
+  </body>
 </html>

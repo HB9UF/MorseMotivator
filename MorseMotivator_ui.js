@@ -37,7 +37,7 @@ function reset_settings() {
 function update_koch_chars() {
     let counter = 0;
     for(c of document.getElementById("koch_chars").children) {
-        if(counter++ < document.getElementById("input_n_chars").value ) {
+        if(counter++ < document.getElementById("input_n_chars").value) {
             c.classList.add("text-danger");
             c.classList.remove("text-muted");
         } else {

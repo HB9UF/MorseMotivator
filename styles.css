@@ -1,14 +1,33 @@
+body{
+  font-size: 16px;
+  font-family: sans-serif;
+  line-height:1.5;
+  background-color: #e3e3e3;
+}
+
 input[type="range"] {
   /* large enough to dominate height of input-group */
   height: 50px;
+  background-color: white;
 }
 
 /* Large text for settings */
 /* TODO: ensure this works on mobile devices */
 .input-group-text {
-  min-width: 15em;
-  font-size: 1.5em;
+  min-width: 100%;
 }
+
+@media (min-width: 768px){
+  .input-group-text {
+    min-width: 20em;
+  }
+}
+
+.input-group-text output {
+  margin-left: auto; /* Move <output> to the right */
+  text-align: right; /* Further hightlight, if needed */
+}
+
 
 /* Remove box around range controller when rules is clicked */
 .form-control:focus {
@@ -17,11 +36,19 @@ input[type="range"] {
 
 /* Force pointer on letters indicating Koch method progress */
 .kochline {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 /* Formatting for numeric settings */
 output {
-    font-weight: bold;
-    margin: 0em 0.5em;
+  font-weight: bold;
+  margin: 0em 0.5em;
+}
+
+.border{
+  border: 1px solid #777 !important;
+}
+
+a.text-white{
+  text-decoration: none;
 }
